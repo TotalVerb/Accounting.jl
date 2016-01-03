@@ -13,7 +13,7 @@ nextid!(l::Ledger) = (l.lastid += 1)
 function push!(l::Ledger, ent::Entry)
     id!(ent, nextid!(l))
     insert!(l.entries, date(ent), ent)
-    nothing
+    l
 end
 function register!(l::Ledger, acc::Account)
     id!(acc, nextid!(l))
