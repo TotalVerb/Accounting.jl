@@ -6,15 +6,15 @@ function balancetable(accounts)
 end
 
 immutable BSSection
-    heading::UTF8String
+    heading::String
     subsections::Vector{BSSection}
-    entries::Vector{Pair{UTF8String, DynamicBasket}}
+    entries::Vector{Pair{String, Basket}}
 
     BSSection(heading) = new(heading, [], [])
 end
 
 function total(s::BSSection)
-    acc = zero(DynamicBasket)
+    acc = zero(Basket)
     for sect in s.subsections
         acc += total(sect)
     end
@@ -24,8 +24,8 @@ function total(s::BSSection)
     acc
 end
 
-function Base.push!{T<:AbstractString}(s::BSSection, p::Pair{T, DynamicBasket})
-    push!(s.entries, UTF8String(p[1]) => p[2])
+function Base.push!{T<:AbstractString}(s::BSSection, p::Pair{T, Basket})
+    push!(s.entries, String(p[1]) => p[2])
 end
 
 function Base.push!(s::BSSection, p::BSSection)
@@ -43,8 +43,8 @@ function balancesheet(ledger::Ledger)
     liabilities = BSSection("Liabilities")
     equity = BSSection("Equity")
     le = BSSection("Liabilities & Equity")
-    earnings = DynamicBasket()
-    unrealized = DynamicBasket()
+    earnings = Basket()
+    unrealized = Basket()
     for (acc, bal) in bals
         @match accounttype(acc) begin
             :asset => push!(assets, name(acc) => bal)
@@ -62,8 +62,8 @@ function balancesheet(ledger::Ledger)
     BalanceSheet(assets, le)
 end
 
-Currencies.valuate(table, as::Symbol, p::Pair{UTF8String, DynamicBasket}) =
-    p.first => DynamicBasket(valuate(table, as, p.second))
+Currencies.valuate(table, as::Symbol, p::Pair{String, Basket}) =
+    p.first => Basket(valuate(table, as, p.second))
 
 function Currencies.valuate(table, as::Symbol, s::BSSection)
     ns = BSSection(s.heading)

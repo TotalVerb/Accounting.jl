@@ -1,7 +1,7 @@
 type Account
     id::Int64
     acctype::Symbol
-    accname::UTF8String
+    accname::String
 end
 
 id(acc::Account) = acc.id

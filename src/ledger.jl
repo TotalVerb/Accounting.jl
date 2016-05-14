@@ -25,11 +25,11 @@ end
 for acctype in [:Asset, :Liability, :Equity, :Revenue, :Expense, :Trading]
     # Get symbols.
     lc = lowercase(string(acctype))
-    asym = Expr(:quote, symbol(lc))  # :asset
-    mutfn = symbol(lc, "!")  # :asset!
+    asym = Expr(:quote, Symbol(lc))  # :asset
+    mutfn = Symbol(lc, "!")  # :asset!
 
     # Make constructor (Asset).
-    @eval ($acctype)(name) = Account(-1, $asym, UTF8String(name))
+    @eval ($acctype)(name) = Account(-1, $asym, String(name))
 
     # Define asset! method.
     @eval begin
@@ -45,7 +45,7 @@ function transfer!(
     debit::Account,
     amount::Monetary,
     description::AbstractString = "")
-    ent = Entry(date, UTF8String(description), [
+    ent = Entry(date, String(description), [
         Split(debit, amount),
         Split(credit, -amount)
     ])
@@ -74,7 +74,7 @@ currency(b::Balance) = currency(b.netdebit)
 debit(b::Balance) = b.amount
 
 function balances(ledger::Ledger)
-    ret = Dict{Account, DynamicBasket}()
+    ret = Dict{Account, Basket}()
     for (date, tx) in ledger.entries
         for split in tx.splits
             symb = currency(split)
@@ -82,7 +82,7 @@ function balances(ledger::Ledger)
             if haskey(ret, key)
                 ret[key][symb] += debit(split)
             else
-                ret[key] = DynamicBasket(debit(split))
+                ret[key] = Basket(debit(split))
             end
         end
     end

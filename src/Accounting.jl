@@ -1,5 +1,8 @@
 module Accounting
 
+using Compat
+import Compat: String
+
 import Currencies: currency
 using Currencies
 using DataStructures

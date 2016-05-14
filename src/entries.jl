@@ -9,17 +9,17 @@ currency(split::Split) = currency(split.netdebit)
 type Entry
     id::Int64
     date::Date
-    description::UTF8String
+    description::String
     splits::Vector{Split}
 
     function Entry(
         date::Date,
-        description::UTF8String,
+        description::String,
         splits::Vector{Split})
 
         dd = DefaultDict(Symbol, Int64, 0)
         for s in splits
-            dd[currency(s)] += int(debit(s))
+            dd[currency(s)] += debit(s).val
         end
         if all(kv -> last(kv) == 0, dd)
             new(-1, date, description, splits)

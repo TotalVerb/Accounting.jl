@@ -34,7 +34,7 @@ transfer!(ledger, Date(2015, 12, 02), sales, cash, 30CAD)
 
 bal = balances(ledger)
 
-@test bal[cash] == StaticBasket([4100USD, 30CAD])
+@test bal[cash] == Basket([4100USD, 30CAD])
 @test bal[inventory] == 980USD
 @test bal[bankloan] == -5000USD
 @test bal[cogs] == 20USD
@@ -42,5 +42,5 @@ bal = balances(ledger)
 
 sheet = balancesheet(ledger)
 
-@test total(sheet.assets) == StaticBasket([5080USD, 30CAD])
+@test total(sheet.assets) == Basket([5080USD, 30CAD])
 @test total(sheet.assets) == total(sheet.le)
