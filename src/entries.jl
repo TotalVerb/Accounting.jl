@@ -9,12 +9,12 @@ currency(split::Split) = currency(split.netdebit)
 type Entry
     id::Int64
     date::Date
-    description::String
+    description::Compat.UTF8String
     splits::Vector{Split}
 
     function Entry(
         date::Date,
-        description::String,
+        description::Compat.UTF8String,
         splits::Vector{Split})
 
         dd = DefaultDict(Symbol, Int64, 0)

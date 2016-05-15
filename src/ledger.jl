@@ -29,7 +29,7 @@ for acctype in [:Asset, :Liability, :Equity, :Revenue, :Expense, :Trading]
     mutfn = Symbol(lc, "!")  # :asset!
 
     # Make constructor (Asset).
-    @eval ($acctype)(name) = Account(-1, $asym, @compat(String(name)))
+    @eval ($acctype)(name) = Account(-1, $asym, Compat.UTF8String(name))
 
     # Define asset! method.
     @eval begin
@@ -45,7 +45,7 @@ function transfer!(
     debit::Account,
     amount::Monetary,
     description::AbstractString = "")
-    ent = Entry(date, @compat(String(description)), [
+    ent = Entry(date, Compat.UTF8String(description), [
         Split(debit, amount),
         Split(credit, -amount)
     ])

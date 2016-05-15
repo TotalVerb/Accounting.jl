@@ -1,5 +1,5 @@
 
 immutable LedgerReport <: Report
-    heading::String
+    heading::Compat.UTF8String
     transactions::Vector{LedgerEntry}
 end
