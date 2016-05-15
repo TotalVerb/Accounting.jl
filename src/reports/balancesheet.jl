@@ -6,9 +6,9 @@ function balancetable(accounts)
 end
 
 immutable BSSection
-    heading::String
+    heading::Compat.UTF8String
     subsections::Vector{BSSection}
-    entries::Vector{Pair{String, Basket}}
+    entries::Vector{Pair{Compat.UTF8String, Basket}}
 
     BSSection(heading) = new(heading, [], [])
 end
