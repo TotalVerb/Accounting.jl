@@ -25,7 +25,7 @@ function total(s::BSSection)
 end
 
 function Base.push!{T<:AbstractString}(s::BSSection, p::Pair{T, Basket})
-    push!(s.entries, String(p[1]) => p[2])
+    push!(s.entries, @compat(String(p[1])) => p[2])
 end
 
 function Base.push!(s::BSSection, p::BSSection)
